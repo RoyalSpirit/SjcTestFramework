@@ -19,7 +19,7 @@ public abstract class FrameworkPage {
         Method method = findActionMethod(actionTitle);
 
         if (method == null) {
-            throw new IllegalArgumentException("Действие '" + actionTitle + "' не найдено на странице " + this.getClass().getSimpleName());
+            throw new IllegalArgumentException("Can't find method '" + actionTitle + "' on the page " + this.getClass().getSimpleName());
         }
 
         try {
@@ -27,11 +27,11 @@ public abstract class FrameworkPage {
                 method.setAccessible(true);
                 method.invoke(this, (Object[]) params);
             } else {
-                throw new IllegalArgumentException("Метод " + method.getName() + " ожидает "
-                        + method.getParameterCount() + " параметров, но передано " + params.length);
+                throw new IllegalArgumentException("Method " + method.getName() + " awaits "
+                        + method.getParameterCount() + " parameters, but received " + params.length);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Ошибка вызова метода с действием: " + actionTitle, e.getCause());
+            throw new RuntimeException("Error calling method with action: " + actionTitle, e.getCause());
         }
     }
 

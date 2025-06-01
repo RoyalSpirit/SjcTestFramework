@@ -24,7 +24,7 @@ public class ElementsObjectRegistry {
                     try {
                         return clazz.getDeclaredConstructor().newInstance();
                     } catch (Exception e) {
-                        throw new RuntimeException("Не удалось создать экземпляр PageObject: " + clazz.getSimpleName(), e);
+                        throw new RuntimeException("Unable to create instance of PageObject: " + clazz.getSimpleName(), e);
                     }
                 })
                 .collect(Collectors.toSet());
@@ -44,11 +44,11 @@ public class ElementsObjectRegistry {
                         field.setAccessible(true);
                         return (By) field.get(page);
                     } catch (IllegalAccessException e) {
-                        throw new RuntimeException("Ошибка доступа к элементу: " + elementTitle, e);
+                        throw new RuntimeException("Error accessing element: " + elementTitle, e);
                     }
                 }
             }
         }
-        throw new IllegalArgumentException("Элемент с заголовком '" + elementTitle + "' не найден.");
+        throw new IllegalArgumentException("Element with title '" + elementTitle + "' not found.");
     }
 }

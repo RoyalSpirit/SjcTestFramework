@@ -27,7 +27,7 @@ public class PageContextRegistry {
                 PageTitle annotation = pageClass.getAnnotation(PageTitle.class);
                 pageTitleMap.put(annotation.title(), pageInstance);
             } catch (Exception e) {
-                throw new RuntimeException("Не удалось создать экземпляр для страницы: " + pageClass.getSimpleName(), e);
+                throw new RuntimeException("Unable to create instance for page: " + pageClass.getSimpleName(), e);
             }
         }
     }
@@ -35,14 +35,14 @@ public class PageContextRegistry {
     public static FrameworkPage getPageByTitle(String title) {
         FrameworkPage page = pageTitleMap.get(title);
         if (page == null) {
-            throw new IllegalArgumentException("Страница с заголовком: '" + title + "' не найдена. Возможно она не существует.");
+            throw new IllegalArgumentException("Page with title: '" + title + "' not found. Maybe it does not exist.");
         }
         return page;
     }
 
     public static FrameworkPage getCurrentPage() {
         if (currentPage == null) {
-            throw new IllegalStateException("Текущая страница не установлена");
+            throw new IllegalStateException("Current page is not set");
         }
         return currentPage;
     }
