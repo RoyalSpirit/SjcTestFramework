@@ -35,7 +35,9 @@ public abstract class AbstractPage extends FrameworkPage {
         $(getElementByTitle(elementTitle)).shouldBe(visible).click();
     }
 
-    @ActionTitle(value = "ожидает")
+    @ActionsTitle({
+            @ActionTitle(value = "awaits"),
+            @ActionTitle(value = "ожидает")})
     public void waitForSomeSeconds(String seconds) throws Exception {
         Thread.sleep(Duration.ofSeconds(Long.parseLong(seconds + 000)));
         }

@@ -19,7 +19,7 @@ public class GetPropertyValues {
     public static String getProperty(String propertyName) throws Exception {
         String propertyValue = getProp().getProperty(propertyName);
         if (propertyValue.isEmpty()) {
-            throw new Exception("Значение проперти '" + propertyName + "' не может быть пустым.");
+            throw new Exception("Property value '" + propertyName + "' can not be empty.");
         }
         return (propertyValue.equals("null")) ? null : propertyValue;
     }
