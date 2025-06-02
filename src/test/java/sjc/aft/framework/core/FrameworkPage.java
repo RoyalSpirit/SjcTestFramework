@@ -15,7 +15,7 @@ public abstract class FrameworkPage {
 
     private static final Map<Class<?>, Map<String, Method>> actionsCache = new HashMap<>();
 
-    public void executeMethodByTitle(String actionTitle, String... params) {
+    public void executeMethodByTitle(String actionTitle, Object... params) {
         Method method = findActionMethod(actionTitle);
 
         if (method == null) {
