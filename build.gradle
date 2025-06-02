@@ -24,6 +24,7 @@ dependencies {
     testImplementation "io.cucumber:cucumber-java:$cucumberVersion"
     testImplementation "io.cucumber:cucumber-junit-platform-engine:$cucumberVersion"
     testImplementation "org.junit.platform:junit-platform-suite:1.10.2"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.7.1"
 
     // Additional dependencies
     testImplementation "io.qameta.allure:allure-cucumber7-jvm:2.24.0"

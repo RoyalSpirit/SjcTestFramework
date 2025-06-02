@@ -1,31 +1,38 @@
 package sjc.aft.framework.pages;
 
+import com.codeborne.selenide.ElementsCollection;
+import io.cucumber.datatable.DataTable;
+import org.junit.jupiter.api.Assertions;
 import sjc.aft.framework.core.FrameworkPage;
 import sjc.aft.framework.core.annotations.ActionTitle;
 import sjc.aft.framework.core.annotations.ActionsTitle;
 import sjc.aft.framework.core.annotations.PageTitle;
 
 import java.time.Duration;
+import java.util.List;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 import static sjc.aft.framework.core.ElementsObjectRegistry.getElementByTitle;
 
 @PageTitle(title = "Abstract class with common elements and methods / Абстрактный класс с общими методами и элементами")
 public abstract class AbstractPage extends FrameworkPage {
 
-    public final String fgRed = "\u001B[31m";
-    public final String fgGreen = "\u001B[32m";
-    public final String fgBlue = "\u001B[34m";
-    public final String fgYellow = "\u001B[33m";
-    public final String fgReset = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
     @ActionsTitle({
             @ActionTitle(value = "fills field"),
             @ActionTitle(value = "заполняет поле")})
     public void fillField(String elementTitle, String expectedValue) throws Exception {
         $(getElementByTitle(elementTitle)).shouldBe(visible).setValue(expectedValue);
-        logger.info("Filled the: " + fgBlue + elementTitle + fgReset + " field with the value: " + fgGreen + expectedValue + fgReset);
+        logger.info("Filled the: " + ANSI_BLUE + elementTitle + ANSI_RESET + " field with the value: " + ANSI_GREEN + expectedValue + ANSI_RESET);
     }
 
     @ActionsTitle({
@@ -33,6 +40,26 @@ public abstract class AbstractPage extends FrameworkPage {
             @ActionTitle(value = "нажимает кнопку")})
     public void clickButton(String elementTitle) throws Exception {
         $(getElementByTitle(elementTitle)).shouldBe(visible).click();
+        logger.info("Pressed the button: " + ANSI_RED + elementTitle + ANSI_RESET);
+    }
+
+    @ActionsTitle({
+            @ActionTitle(value = "checks list of elements"),
+            @ActionTitle(value = "проверяет, что список")})
+    public void validateListOfElementsContainsExpectedValues(String elementsListTitle, DataTable tableWithElements) throws Exception {
+        List<String> expectedElements = tableWithElements.asList(String.class);
+        ElementsCollection elementsFromXpath = $$(getElementByTitle(elementsListTitle));
+        Assertions.assertFalse(elementsFromXpath.isEmpty(),
+                "List of elements from xpath is empty. Don't forget to check xpath for correctness.");
+        Assertions.assertEquals(expectedElements.size(), elementsFromXpath.size(),
+                "List of expected elements and list of elements from xpath must be the same size");
+
+        for (int i = 0; i < elementsFromXpath.size(); i++) {
+            Assertions.assertEquals(expectedElements.get(i), elementsFromXpath.get(i).getText(),
+                    "Expected text '" + expectedElements.get(i) + "', but received '" + elementsFromXpath.get(i).getText() + "'");
+            logger.info("Checked. Expected " + ANSI_YELLOW + expectedElements.get(i) + ANSI_RESET +
+                    ", received from xpath " + ANSI_BLUE + elementsFromXpath.get(i).getText() + ANSI_RESET);
+        }
     }
 
     @ActionsTitle({
