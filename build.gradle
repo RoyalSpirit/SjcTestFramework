@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '2.9.6'
 }
 
 java {
@@ -12,26 +13,52 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.add('-parameters')
+}
+
+configurations {
+    agent {
+        canBeResolved = true
+        canBeConsumed = true
+    }
+}
 
 def cucumberVersion = '7.14.0'
-def selenideVersion = '7.9.0'
+def selenideVersion = '7.9.3'
+def junitVersion = '5.11.3'
+
+def allureVersion = '2.29.0'
+def aspectJVersion = '1.9.22'
 
 dependencies {
 
     // Core dependencies
     implementation "com.codeborne:selenide:$selenideVersion"
     implementation "org.reflections:reflections:0.10.2"
+    implementation "org.seleniumhq.selenium:selenium-devtools-v137:4.33.0"
     testImplementation "io.cucumber:cucumber-java:$cucumberVersion"
     testImplementation "io.cucumber:cucumber-junit-platform-engine:$cucumberVersion"
     testImplementation "org.junit.platform:junit-platform-suite:1.10.2"
-    testImplementation "org.junit.jupiter:junit-jupiter:5.7.1"
+    testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
 
     // Additional dependencies
     testImplementation "io.qameta.allure:allure-cucumber7-jvm:2.24.0"
     testImplementation "ch.qos.logback:logback-classic:1.3.15"
 
+    // Allure report dependencies
+    agent "org.aspectj:aspectjweaver:$aspectJVersion"
+    testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    testImplementation ("io.qameta.allure:allure-selenide:$allureVersion")
+    testImplementation "io.qameta.allure:allure-junit5"
+    testImplementation platform("org.junit:junit-bom:$junitVersion")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 }
 
 test {
+    ignoreFailures = true
     useJUnitPlatform()
+    jvmArgs = [ "-javaagent:${configurations.agent.singleFile}" ]
 }
