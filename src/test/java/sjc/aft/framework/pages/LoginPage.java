@@ -22,6 +22,9 @@ public class LoginPage extends AbstractPage {
     @ElementTitle(value = "Login")
     private final By loginButton = By.xpath("//input[@id='login-button']");
 
+    @ElementTitle(value = "Login error message")
+    private final By loginErrorMessage = By.xpath("//div[contains(@class,'error-message')]/h3");
+
     @Override
     public void assertIsOpen() {
         $(swapLabsPageTitle).shouldBe(visible);

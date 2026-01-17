@@ -1,8 +1,11 @@
 package sjc.aft.framework.pages;
 
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import io.cucumber.datatable.DataTable;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.Platform;
 import sjc.aft.framework.core.FrameworkPage;
 import sjc.aft.framework.core.annotations.ActionTitle;
 import sjc.aft.framework.core.annotations.ActionsTitle;
@@ -36,6 +39,17 @@ public abstract class AbstractPage extends FrameworkPage {
     }
 
     @ActionsTitle({
+            @ActionTitle(value = "clears field"),
+            @ActionTitle(value = "очищает поле")})
+    public void clearField(String elementTitle) throws Exception {
+        Keys cmdCtrl = Platform.getCurrent().is(Platform.MAC) ? Keys.COMMAND : Keys.CONTROL;
+        SelenideElement element = $(getElementByTitle(elementTitle));
+        element.sendKeys(cmdCtrl, "a");
+        element.sendKeys(Keys.DELETE);
+        logger.info("Cleared field with title '" + ANSI_BLUE + elementTitle + ANSI_RESET + "'.");
+    }
+
+    @ActionsTitle({
             @ActionTitle(value = "press button"),
             @ActionTitle(value = "нажимает кнопку")})
     public void clickButton(String elementTitle) throws Exception {
@@ -63,10 +77,21 @@ public abstract class AbstractPage extends FrameworkPage {
     }
 
     @ActionsTitle({
+            @ActionTitle(value = "checks field or element equals expected value"),
+            @ActionTitle(value = "проверяет поле или элемент на ожидаемое значение")})
+    public void validateElementOrFieldEqualsExpectedValue(String elementTitle, String expectedValue) throws Exception {
+        String textFromElement = $(getElementByTitle(elementTitle)).getText();
+        Assertions.assertEquals(textFromElement, expectedValue,
+                "Expected value '" + expectedValue + "', but received '" + textFromElement + "'");
+        logger.info("Checked. Expected '" + ANSI_YELLOW + expectedValue + ANSI_RESET +
+                "', received from element or field '" + ANSI_BLUE + textFromElement + ANSI_RESET + "'");
+    }
+
+    @ActionsTitle({
             @ActionTitle(value = "awaits"),
             @ActionTitle(value = "ожидает")})
     public void waitForSomeSeconds(String seconds) throws Exception {
-        Thread.sleep(Duration.ofSeconds(Long.parseLong(seconds + 000)));
+        Thread.sleep(Duration.ofSeconds(Long.parseLong(seconds)));
         }
 
 }
