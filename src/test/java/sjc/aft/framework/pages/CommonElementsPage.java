@@ -8,19 +8,10 @@ import sjc.aft.framework.core.annotations.PageTitle;
 public class CommonElementsPage extends AbstractPage {
 
     @ElementTitle(value = "Menu")
-    private final By openMenuButton = By.xpath("//button[text()='Open Menu']");
+    protected final By openMenuButton = By.xpath("//button[text()='Open Menu']");
 
-    @ElementTitle(value = "All Items")
-    private final By allItemsButton = By.xpath("//a[text()='All Items']");
-
-    @ElementTitle(value = "About")
-    private final By aboutButton = By.xpath("//a[text()='About']");
-
-    @ElementTitle(value = "Logout")
-    private final By logoutButton = By.xpath("//a[text()='Logout']");
-
-    @ElementTitle(value = "Reset App State")
-    private final By resetAppStateButton = By.xpath("//a[text()='Reset App State']");
+    @ElementTitle(value = "Cart")
+    protected final By cartButton = By.xpath("//div[contains(@class,'shopping_cart')]");
 
     @Override
     public void assertIsOpen() {
