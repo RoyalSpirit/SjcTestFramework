@@ -1,5 +1,6 @@
 package sjc.aft.framework.pages;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.cucumber.datatable.DataTable;
@@ -51,10 +52,30 @@ public abstract class AbstractPage extends FrameworkPage {
 
     @ActionsTitle({
             @ActionTitle(value = "press button"),
+            @ActionTitle(value = "click on element"),
             @ActionTitle(value = "нажимает кнопку")})
     public void clickButton(String elementTitle) throws Exception {
         $(getElementByTitle(elementTitle)).shouldBe(visible).click();
         logger.info("Pressed the button: " + ANSI_RED + elementTitle + ANSI_RESET);
+    }
+
+    @ActionsTitle({
+            @ActionTitle(value = "selects element from list"),
+            @ActionTitle(value = "выбирает элемент из списка")})
+    public void selectElementFromListByName(String elementsListTitle, String elementName) {
+        ElementsCollection elementsFromXpath = $$(getElementByTitle(elementsListTitle));
+        elementsFromXpath.shouldHave(CollectionCondition.sizeGreaterThan(0));
+
+        for (SelenideElement element : elementsFromXpath) {
+            String text = element.getText().trim();
+            if (text.equals(elementName)) {
+                element.shouldBe(visible).click();
+                logger.info("Element with name '" + ANSI_YELLOW + elementName + ANSI_RESET +
+                        "' has been successfully selected from list '" + ANSI_BLUE + elementsListTitle + ANSI_RESET + "'.");
+                return;
+            }
+        }
+        Assertions.fail("Element with name '" + elementName + "' not found.");
     }
 
     @ActionsTitle({
@@ -63,8 +84,7 @@ public abstract class AbstractPage extends FrameworkPage {
     public void validateListOfElementsContainsExpectedValues(String elementsListTitle, DataTable tableWithElements) throws Exception {
         List<String> expectedElements = tableWithElements.asList(String.class);
         ElementsCollection elementsFromXpath = $$(getElementByTitle(elementsListTitle));
-        Assertions.assertFalse(elementsFromXpath.isEmpty(),
-                "List of elements from xpath is empty. Don't forget to check xpath for correctness.");
+        elementsFromXpath.shouldHave(CollectionCondition.sizeGreaterThan(0));
         Assertions.assertEquals(expectedElements.size(), elementsFromXpath.size(),
                 "List of expected elements and list of elements from xpath must be the same size");
 

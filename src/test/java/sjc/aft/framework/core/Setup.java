@@ -38,6 +38,8 @@ public class Setup {
     public static void sepUp() throws Exception {
         Configuration.browser = GetPropertyValues.getProperty("browser.name");
         Configuration.browserSize = GetPropertyValues.getProperty("browser.size");
+        Configuration.browserVersion = GetPropertyValues.getProperty("browser.version");
+        String startingUrl = GetPropertyValues.getProperty("starting.url");
         if (Objects.equals(GetPropertyValues.getProperty("browser.name"), "chrome")) {
             // Custom path to Chromedriver
 //        System.setProperty("webdriver.chrome.driver", Objects.requireNonNull(GetPropertyValues.getProperty("path.to.webdriver")));
@@ -48,18 +50,13 @@ public class Setup {
             // Custom path to Firefoxdriver
 //        System.setProperty("webdriver.gecko.driver", Objects.requireNonNull(GetPropertyValues.getProperty("path.to.webdriver")));
         } else throw new Exception("Webdriver not found or not set in configuration");
+        open(startingUrl);
+        logger.info("Opening URL: " + startingUrl);
     }
 
     @Before
     public void scenarioNameLogging(Scenario scenario) {
         logger.info("Running scenario with name: " + ANSI_CYAN + scenario.getName() + ANSI_RESET);
-    }
-
-    @Before
-    public void opensStartingUrl() throws Exception {
-        String startingUrl = GetPropertyValues.getProperty("starting.url");
-        open(startingUrl);
-        logger.info("Opening URL: " + startingUrl);
     }
 
     @After
