@@ -31,6 +31,12 @@ public abstract class AbstractPage extends FrameworkPage {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
 
+    /**
+     * Fills the specified field with the given value.
+     * @param elementTitle the title of the field to fill
+     * @param expectedValue the value to set
+     * @throws Exception if the element cannot be found or interacted with
+     */
     @ActionsTitle({
             @ActionTitle(value = "fills field"),
             @ActionTitle(value = "заполняет поле")})
@@ -39,6 +45,11 @@ public abstract class AbstractPage extends FrameworkPage {
         logger.info("Filled the: " + ANSI_BLUE + elementTitle + ANSI_RESET + " field with the value: " + ANSI_GREEN + expectedValue + ANSI_RESET);
     }
 
+    /**
+     * Clears the specified field.
+     * @param elementTitle the title of the field to clear
+     * @throws Exception if the element cannot be found or interacted with
+     */
     @ActionsTitle({
             @ActionTitle(value = "clears field"),
             @ActionTitle(value = "очищает поле")})

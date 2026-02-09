@@ -15,6 +15,13 @@ public abstract class FrameworkPage {
 
     private static final Map<Class<?>, Map<String, Method>> actionsCache = new HashMap<>();
 
+    /**
+     * Executes a method on the page by its action title, passing the given parameters.
+     * @param actionTitle the title of the action to execute
+     * @param params the parameters to pass to the method
+     * @throws IllegalArgumentException if the method is not found or parameter count mismatches
+     * @throws RuntimeException if invocation fails
+     */
     public void executeMethodByTitle(String actionTitle, Object... params) {
         Method method = findActionMethod(actionTitle);
 
