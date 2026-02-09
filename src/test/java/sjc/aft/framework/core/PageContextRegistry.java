@@ -14,6 +14,10 @@ public class PageContextRegistry {
     private static final Map<String, FrameworkPage> pageTitleMap = new HashMap<>();
     private static FrameworkPage currentPage;
 
+    /**
+     * Automatically registers all pages annotated with @PageTitle in the given package.
+     * @param basePackage the base package to scan
+     */
     public static void autoRegisterPages(String basePackage) {
         Reflections reflections = new Reflections(basePackage);
         Set<Class<?>> pageClasses = reflections.getTypesAnnotatedWith(PageTitle.class);
@@ -32,6 +36,12 @@ public class PageContextRegistry {
         }
     }
 
+    /**
+     * Gets a registered page instance by its title.
+     * @param title the title of the page
+     * @return the FrameworkPage instance
+     * @throws IllegalArgumentException if the page is not found
+     */
     public static FrameworkPage getPageByTitle(String title) {
         FrameworkPage page = pageTitleMap.get(title);
         if (page == null) {
@@ -40,6 +50,11 @@ public class PageContextRegistry {
         return page;
     }
 
+    /**
+     * Gets the current page instance.
+     * @return the current FrameworkPage
+     * @throws IllegalStateException if the current page is not set
+     */
     public static FrameworkPage getCurrentPage() {
         if (currentPage == null) {
             throw new IllegalStateException("Current page is not set");
@@ -47,6 +62,10 @@ public class PageContextRegistry {
         return currentPage;
     }
 
+    /**
+     * Sets the current page instance.
+     * @param page the FrameworkPage to set as current
+     */
     public static void setCurrentPage(FrameworkPage page) {
         currentPage = page;
     }

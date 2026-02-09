@@ -30,10 +30,20 @@ public class ElementsObjectRegistry {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Returns the set of page objects registered in the framework.
+     * @return set of page objects
+     */
     public static Set<Object> getPageObjects() {
         return pageObjects;
     }
 
+    /**
+     * Finds a By locator for an element by its title annotation.
+     * @param elementTitle the title of the element
+     * @return By locator for the element
+     * @throws IllegalArgumentException if the element with the specified title is not found
+     */
     public static By getElementByTitle(String elementTitle) {
         for (Object page : pageObjects) {
             for (Field field : page.getClass().getDeclaredFields()) {

@@ -23,6 +23,10 @@ public class Setup {
 
     public static final Logger logger = LoggerFactory.getLogger(Setup.class);
 
+    /**
+     * Registers all pages in the framework.
+     * @throws Exception if registration fails
+     */
     @BeforeAll
     public static void registerAllPages() throws Exception {
         PageContextRegistry.autoRegisterPages("sjc.aft.framework.pages");
@@ -34,6 +38,10 @@ public class Setup {
 //        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
 //    }
 
+    /**
+     * Sets up browser configuration and capabilities before tests.
+     * @throws Exception if setup fails
+     */
     @Before
     public static void sepUp() throws Exception {
         Configuration.browser = GetPropertyValues.getProperty("browser.name");
