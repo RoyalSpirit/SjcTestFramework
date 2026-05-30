@@ -1,7 +1,7 @@
-package sjc.aft.framework.core;
+package io.github.royalspirit.sjctestframework.core;
 
+import io.github.royalspirit.sjctestframework.core.annotations.PageTitle;
 import org.reflections.Reflections;
-import sjc.aft.framework.core.annotations.PageTitle;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;

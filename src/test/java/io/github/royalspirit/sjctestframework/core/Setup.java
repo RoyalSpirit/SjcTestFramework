@@ -1,4 +1,4 @@
-package sjc.aft.framework.core;
+package io.github.royalspirit.sjctestframework.core;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
@@ -15,8 +15,8 @@ import java.io.InputStream;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.*;
-import static sjc.aft.framework.pages.AbstractPage.ANSI_CYAN;
-import static sjc.aft.framework.pages.AbstractPage.ANSI_RESET;
+import static io.github.royalspirit.sjctestframework.pages.AbstractPage.ANSI_CYAN;
+import static io.github.royalspirit.sjctestframework.pages.AbstractPage.ANSI_RESET;
 
 
 public class Setup {
@@ -29,7 +29,7 @@ public class Setup {
      */
     @BeforeAll
     public static void registerAllPages() throws Exception {
-        PageContextRegistry.autoRegisterPages("sjc.aft.framework.pages");
+        PageContextRegistry.autoRegisterPages("io.github.royalspirit.sjctestframework.pages");
     }
 
     // Enables Selenide logger

@@ -1,4 +1,4 @@
-package sjc.aft.framework;
+package io.github.royalspirit.sjctestframework;
 
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
@@ -10,6 +10,6 @@ import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
-@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "sjc.aft.framework")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "io.github.royalspirit.sjctestframework")
 public class RunCucumberTest {
 }

@@ -1,8 +1,8 @@
-package sjc.aft.framework.pages;
+package io.github.royalspirit.sjctestframework.pages;
 
+import io.github.royalspirit.sjctestframework.core.annotations.ElementTitle;
+import io.github.royalspirit.sjctestframework.core.annotations.PageTitle;
 import org.openqa.selenium.By;
-import sjc.aft.framework.core.annotations.ElementTitle;
-import sjc.aft.framework.core.annotations.PageTitle;
 
 @PageTitle(title = "Common Elements For All Pages (like menu and etc)")
 public class CommonElementsPage extends AbstractPage {

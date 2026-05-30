@@ -1,15 +1,15 @@
-package sjc.aft.framework.core.stepdefs;
+package io.github.royalspirit.sjctestframework.core.stepdefs;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.ru.Когда;
+import io.github.royalspirit.sjctestframework.core.FrameworkPage;
+import io.github.royalspirit.sjctestframework.core.PageContextRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sjc.aft.framework.core.FrameworkPage;
-import sjc.aft.framework.core.PageContextRegistry;
 
-import static sjc.aft.framework.core.PageContextRegistry.getPageByTitle;
-import static sjc.aft.framework.pages.AbstractPage.ANSI_PURPLE;
-import static sjc.aft.framework.pages.AbstractPage.ANSI_RESET;
+import static io.github.royalspirit.sjctestframework.core.PageContextRegistry.getPageByTitle;
+import static io.github.royalspirit.sjctestframework.pages.AbstractPage.ANSI_PURPLE;
+import static io.github.royalspirit.sjctestframework.pages.AbstractPage.ANSI_RESET;
 
 public class BasicSteps {
 
