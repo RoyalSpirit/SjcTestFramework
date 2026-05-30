@@ -44,20 +44,42 @@ public class Setup {
      */
     @Before
     public static void sepUp() throws Exception {
-        Configuration.browser = GetPropertyValues.getProperty("browser.name");
-        Configuration.browserSize = GetPropertyValues.getProperty("browser.size");
-        Configuration.browserVersion = GetPropertyValues.getProperty("browser.version");
-        String startingUrl = GetPropertyValues.getProperty("starting.url");
-        if (Objects.equals(GetPropertyValues.getProperty("browser.name"), "chrome")) {
-            // Custom path to Chromedriver
-//        System.setProperty("webdriver.chrome.driver", Objects.requireNonNull(GetPropertyValues.getProperty("path.to.webdriver")));
+        String browserName = GetPropertyValues.getRequiredProperty("browser.name");
+        String browserSize = GetPropertyValues.getRequiredProperty("browser.size");
+        String startingUrl = GetPropertyValues.getRequiredProperty("starting.url");
+        String browserVersion = GetPropertyValues.getOptionalProperty("browser.version");
+        String webdriverPath = GetPropertyValues.getOptionalProperty("path.to.webdriver");
+        boolean headless = GetPropertyValues.getBooleanProperty("browser.headless", false);
+
+        Configuration.browser = browserName;
+        Configuration.browserSize = browserSize;
+        Configuration.headless = headless;
+
+        if (browserVersion != null) {
+            Configuration.browserVersion = browserVersion;
+        }
+
+        if (webdriverPath != null) {
+            if (Objects.equals(browserName, "chrome")) {
+                System.setProperty("webdriver.chrome.driver", webdriverPath);
+            } else if (Objects.equals(browserName, "firefox")) {
+                System.setProperty("webdriver.gecko.driver", webdriverPath);
+            }
+        }
+
+        if (Objects.equals(browserName, "chrome")) {
             ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--disable-dev-shm-usage");
+
+            if (headless) {
+                chromeOptions.addArguments("--no-sandbox");
+            }
+
             Configuration.browserCapabilities = chromeOptions;
-        } else if (Objects.equals(GetPropertyValues.getProperty("browser.name"), "firefox")) {
-            // Custom path to Firefoxdriver
-//        System.setProperty("webdriver.gecko.driver", Objects.requireNonNull(GetPropertyValues.getProperty("path.to.webdriver")));
-        } else throw new Exception("Webdriver not found or not set in configuration");
+        } else if (!Objects.equals(browserName, "firefox")) {
+            throw new Exception("Unsupported browser: " + browserName);
+        }
+
         open(startingUrl);
         logger.info("Opening URL: " + startingUrl);
     }
