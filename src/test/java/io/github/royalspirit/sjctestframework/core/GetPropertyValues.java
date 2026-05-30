@@ -1,4 +1,4 @@
-package sjc.aft.framework.core;
+package io.github.royalspirit.sjctestframework.core;
 
 import java.io.InputStream;
 import java.util.Properties;

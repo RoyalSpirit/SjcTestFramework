@@ -1,16 +1,16 @@
-package sjc.aft.framework.pages;
+package io.github.royalspirit.sjctestframework.pages;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.cucumber.datatable.DataTable;
+import io.github.royalspirit.sjctestframework.core.FrameworkPage;
+import io.github.royalspirit.sjctestframework.core.annotations.ActionTitle;
+import io.github.royalspirit.sjctestframework.core.annotations.ActionsTitle;
+import io.github.royalspirit.sjctestframework.core.annotations.PageTitle;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.Platform;
-import sjc.aft.framework.core.FrameworkPage;
-import sjc.aft.framework.core.annotations.ActionTitle;
-import sjc.aft.framework.core.annotations.ActionsTitle;
-import sjc.aft.framework.core.annotations.PageTitle;
 
 import java.time.Duration;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static sjc.aft.framework.core.ElementsObjectRegistry.getElementByTitle;
+import static io.github.royalspirit.sjctestframework.core.ElementsObjectRegistry.getElementByTitle;
 
 @PageTitle(title = "Abstract class with common elements and methods / Абстрактный класс с общими методами и элементами")
 public abstract class AbstractPage extends FrameworkPage {

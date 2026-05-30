@@ -1,9 +1,9 @@
-package sjc.aft.framework.core;
+package io.github.royalspirit.sjctestframework.core;
 
+import io.github.royalspirit.sjctestframework.core.annotations.ElementTitle;
+import io.github.royalspirit.sjctestframework.core.annotations.PageTitle;
 import org.openqa.selenium.By;
 import org.reflections.Reflections;
-import sjc.aft.framework.core.annotations.ElementTitle;
-import sjc.aft.framework.core.annotations.PageTitle;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -15,7 +15,7 @@ public class ElementsObjectRegistry {
     private static final Set<Object> pageObjects;
 
     static {
-        Reflections reflections = new Reflections("sjc.aft.framework.pages");
+        Reflections reflections = new Reflections("io.github.royalspirit.sjctestframework.pages");
         Set<Class<?>> pages = reflections.getTypesAnnotatedWith(PageTitle.class);
 
         pageObjects = pages.stream()

@@ -1,9 +1,9 @@
-package sjc.aft.framework.core;
+package io.github.royalspirit.sjctestframework.core;
 
+import io.github.royalspirit.sjctestframework.core.annotations.ActionTitle;
+import io.github.royalspirit.sjctestframework.core.annotations.ActionsTitle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sjc.aft.framework.core.annotations.ActionTitle;
-import sjc.aft.framework.core.annotations.ActionsTitle;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

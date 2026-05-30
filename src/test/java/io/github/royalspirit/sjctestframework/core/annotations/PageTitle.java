@@ -1,4 +1,4 @@
-package sjc.aft.framework.core.annotations;
+package io.github.royalspirit.sjctestframework.core.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
