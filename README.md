@@ -12,7 +12,7 @@ The project demonstrates a readable BDD-style DSL where feature steps call page 
 
 ---
 
-English version | Русская версия
+[English Version](#english-version) | [Русская версия](#русская-версия)
 
 ---
 
@@ -55,8 +55,9 @@ src/test/java/io/github/royalspirit/sjctestframework/
 │   ├── stepdefs/                       # Cucumber step definitions
 │   ├── Setup.java                      # Browser and scenario hooks
 │   ├── FrameworkPage.java              # Base page action executor
-│   ├── PageContextRegistry.java        # Current page registry
-│   └── ElementsObjectRegistry.java     # Element title registry
+│   ├── PageContextRegistry.java        # Current page and page object registry
+│   ├── ElementsObjectRegistry.java     # Element title registry
+│   └── FrameworkRegistryValidator.java # Startup validation for framework annotations
 └── pages/                              # Page objects and common page actions
 
 src/test/resources/
@@ -116,9 +117,16 @@ browser.size=1920x1200
 browser.version=null
 browser.headless=false
 path.to.webdriver=null
+logs.color.enabled=true
 ```
 
 System properties passed with `-D` have priority over values from `config.properties`.
+
+Disable colored console log values:
+
+```bash
+./gradlew test -Dlogs.color.enabled=false
+```
 
 ### Allure Report
 
@@ -136,7 +144,7 @@ Generate and open the report:
 
 ---
 
-## Русская Версия
+## Русская версия
 
 SJC Test Framework — UI test automation framework на Java, построенный на Cucumber, Selenide, JUnit Platform и Allure.
 
@@ -210,6 +218,12 @@ src/test/resources/configuration/config.properties
 ```
 
 Значения, переданные через `-D`, имеют приоритет над значениями из файла.
+
+Отключить цветные значения в консольных логах:
+
+```bash
+./gradlew test -Dlogs.color.enabled=false
+```
 
 ### Allure Report
 

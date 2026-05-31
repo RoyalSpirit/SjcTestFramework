@@ -22,6 +22,7 @@ public class PageContextRegistry {
 
         pageTitleMap.clear();
         currentPage = null;
+        FrameworkRegistryValidator.validateUniquePageTitles(pageClasses);
 
         for (Class<?> pageClass : pageClasses) {
             if (Modifier.isAbstract(pageClass.getModifiers())) {
@@ -35,6 +36,9 @@ public class PageContextRegistry {
                 throw new RuntimeException("Unable to create instance for page: " + pageClass.getSimpleName(), e);
             }
         }
+
+        FrameworkRegistryValidator.validateUniqueElementTitles(pageTitleMap.values());
+        FrameworkRegistryValidator.validateUniqueActionTitles(pageTitleMap.values());
     }
 
     /**
