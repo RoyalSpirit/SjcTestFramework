@@ -10,8 +10,8 @@ import static com.codeborne.selenide.Selenide.$;
 @PageTitle(title = "Page Swag Labs")
 public class LoginPage extends AbstractPage {
 
-    @ElementTitle(value = "Swap Labs Page Title")
-    private final By swapLabsPageTitle = By.xpath("//div[@class='login_logo' and text()='Swag Labs']");
+    @ElementTitle(value = "Swag Labs Page Title")
+    private final By swagLabsPageTitle = By.xpath("//div[@class='login_logo' and text()='Swag Labs']");
 
     @ElementTitle(value = "Username")
     private final By usernameInput = By.xpath("//input[@id='user-name']");
@@ -27,6 +27,6 @@ public class LoginPage extends AbstractPage {
 
     @Override
     public void assertIsOpen() {
-        $(swapLabsPageTitle).shouldBe(visible);
+        $(swagLabsPageTitle).shouldBe(visible);
     }
 }

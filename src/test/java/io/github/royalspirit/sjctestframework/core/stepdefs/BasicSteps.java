@@ -8,8 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static io.github.royalspirit.sjctestframework.core.PageContextRegistry.getPageByTitle;
-import static io.github.royalspirit.sjctestframework.pages.AbstractPage.ANSI_PURPLE;
-import static io.github.royalspirit.sjctestframework.pages.AbstractPage.ANSI_RESET;
+import static io.github.royalspirit.sjctestframework.core.logging.LogFormatter.purple;
 
 public class BasicSteps {
 
@@ -24,7 +23,7 @@ public class BasicSteps {
         FrameworkPage page = getPageByTitle(pageTitle);
         PageContextRegistry.setCurrentPage(page);
         page.assertIsOpen();
-        logger.info("User is located on the page: " + ANSI_PURPLE + pageTitle + ANSI_RESET);
+        logger.info("User is located on the page: " + purple(pageTitle));
     }
 
     /**

@@ -15,8 +15,7 @@ import java.io.InputStream;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.*;
-import static io.github.royalspirit.sjctestframework.pages.AbstractPage.ANSI_CYAN;
-import static io.github.royalspirit.sjctestframework.pages.AbstractPage.ANSI_RESET;
+import static io.github.royalspirit.sjctestframework.core.logging.LogFormatter.cyan;
 
 
 public class Setup {
@@ -43,7 +42,7 @@ public class Setup {
      * @throws Exception if setup fails
      */
     @Before
-    public static void sepUp() throws Exception {
+    public static void setUp() throws Exception {
         String browserName = GetPropertyValues.getRequiredProperty("browser.name");
         String browserSize = GetPropertyValues.getRequiredProperty("browser.size");
         String startingUrl = GetPropertyValues.getRequiredProperty("starting.url");
@@ -86,7 +85,7 @@ public class Setup {
 
     @Before
     public void scenarioNameLogging(Scenario scenario) {
-        logger.info("Running scenario with name: " + ANSI_CYAN + scenario.getName() + ANSI_RESET);
+        logger.info("Running scenario with name: " + cyan(scenario.getName()));
     }
 
     @After
