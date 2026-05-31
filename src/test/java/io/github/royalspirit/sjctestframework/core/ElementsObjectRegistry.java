@@ -1,41 +1,19 @@
 package io.github.royalspirit.sjctestframework.core;
 
 import io.github.royalspirit.sjctestframework.core.annotations.ElementTitle;
-import io.github.royalspirit.sjctestframework.core.annotations.PageTitle;
 import org.openqa.selenium.By;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Collection;
 
 public class ElementsObjectRegistry {
 
-    private static final Set<Object> pageObjects;
-
-    static {
-        Reflections reflections = new Reflections("io.github.royalspirit.sjctestframework.pages");
-        Set<Class<?>> pages = reflections.getTypesAnnotatedWith(PageTitle.class);
-
-        pageObjects = pages.stream()
-                .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
-                .map(clazz -> {
-                    try {
-                        return clazz.getDeclaredConstructor().newInstance();
-                    } catch (Exception e) {
-                        throw new RuntimeException("Unable to create instance of PageObject: " + clazz.getSimpleName(), e);
-                    }
-                })
-                .collect(Collectors.toSet());
-    }
-
     /**
      * Returns the set of page objects registered in the framework.
-     * @return set of page objects
+     * @return registered page objects
      */
-    public static Set<Object> getPageObjects() {
-        return pageObjects;
+    public static Collection<FrameworkPage> getPageObjects() {
+        return PageContextRegistry.getRegisteredPages();
     }
 
     /**
@@ -45,7 +23,7 @@ public class ElementsObjectRegistry {
      * @throws IllegalArgumentException if the element with the specified title is not found
      */
     public static By getElementByTitle(String elementTitle) {
-        for (Object page : pageObjects) {
+        for (FrameworkPage page : getPageObjects()) {
             for (Field field : page.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(ElementTitle.class)
                         && field.getAnnotation(ElementTitle.class).value().equalsIgnoreCase(elementTitle)

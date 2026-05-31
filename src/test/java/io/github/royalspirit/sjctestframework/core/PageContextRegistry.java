@@ -4,9 +4,7 @@ import io.github.royalspirit.sjctestframework.core.annotations.PageTitle;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class PageContextRegistry {
 
@@ -22,6 +20,9 @@ public class PageContextRegistry {
         Reflections reflections = new Reflections(basePackage);
         Set<Class<?>> pageClasses = reflections.getTypesAnnotatedWith(PageTitle.class);
 
+        pageTitleMap.clear();
+        currentPage = null;
+
         for (Class<?> pageClass : pageClasses) {
             if (Modifier.isAbstract(pageClass.getModifiers())) {
                 continue;
@@ -34,6 +35,17 @@ public class PageContextRegistry {
                 throw new RuntimeException("Unable to create instance for page: " + pageClass.getSimpleName(), e);
             }
         }
+    }
+
+    /**
+     * Gets all registered page instances.
+     * @return registered framework pages
+     */
+    public static Collection<FrameworkPage> getRegisteredPages() {
+        if (pageTitleMap.isEmpty()) {
+            throw new IllegalStateException("Pages are not registered. Call autoRegisterPages before accessing page objects.");
+        }
+        return Collections.unmodifiableCollection(pageTitleMap.values());
     }
 
     /**
@@ -74,6 +86,5 @@ public class PageContextRegistry {
         FrameworkPage page = getPageByTitle(title);
         setCurrentPage(page);
     }
-
 
 }

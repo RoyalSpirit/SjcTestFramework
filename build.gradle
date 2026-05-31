@@ -56,7 +56,26 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 }
 
+def forwardedTestSystemProperties = [
+        'starting.url',
+        'browser.name',
+        'browser.size',
+        'browser.version',
+        'browser.headless',
+        'path.to.webdriver',
+        'logs.color.enabled',
+        'cucumber.filter.tags'
+]
+
 test {
     useJUnitPlatform()
+
+    forwardedTestSystemProperties.each { propertyName ->
+        def propertyValue = System.getProperty(propertyName)
+        if (propertyValue != null) {
+            systemProperty propertyName, propertyValue
+        }
+    }
+
     jvmArgs = [ "-javaagent:${configurations.agent.singleFile}" ]
 }
