@@ -19,17 +19,10 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static io.github.royalspirit.sjctestframework.core.ElementsObjectRegistry.getElementByTitle;
+import static io.github.royalspirit.sjctestframework.core.logging.LogFormatter.*;
 
 @PageTitle(title = "Abstract class with common elements and methods / Абстрактный класс с общими методами и элементами")
 public abstract class AbstractPage extends FrameworkPage {
-
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_RESET = "\u001B[0m";
 
     /**
      * Fills the specified field with the given value.
@@ -42,7 +35,7 @@ public abstract class AbstractPage extends FrameworkPage {
             @ActionTitle(value = "заполняет поле")})
     public void fillField(String elementTitle, String expectedValue) throws Exception {
         $(getElementByTitle(elementTitle)).shouldBe(visible).setValue(expectedValue);
-        logger.info("Filled the: " + ANSI_BLUE + elementTitle + ANSI_RESET + " field with the value: " + ANSI_GREEN + expectedValue + ANSI_RESET);
+        logger.info("Filled the: '" + blue(elementTitle) + "' field with the value: '" + green(expectedValue) + "'");
     }
 
     /**
@@ -58,7 +51,7 @@ public abstract class AbstractPage extends FrameworkPage {
         SelenideElement element = $(getElementByTitle(elementTitle));
         element.sendKeys(cmdCtrl, "a");
         element.sendKeys(Keys.DELETE);
-        logger.info("Cleared field with title '" + ANSI_BLUE + elementTitle + ANSI_RESET + "'.");
+        logger.info("Cleared field with title: '" + blue(elementTitle) + "'.");
     }
 
     @ActionsTitle({
@@ -67,7 +60,7 @@ public abstract class AbstractPage extends FrameworkPage {
             @ActionTitle(value = "нажимает кнопку")})
     public void clickButton(String elementTitle) throws Exception {
         $(getElementByTitle(elementTitle)).shouldBe(visible).click();
-        logger.info("Pressed the button: " + ANSI_RED + elementTitle + ANSI_RESET);
+        logger.info("Pressed the button: " + red(elementTitle));
     }
 
     @ActionsTitle({
@@ -81,8 +74,8 @@ public abstract class AbstractPage extends FrameworkPage {
             String text = element.getText().trim();
             if (text.equals(elementName)) {
                 element.shouldBe(visible).click();
-                logger.info("Element with name '" + ANSI_YELLOW + elementName + ANSI_RESET +
-                        "' has been successfully selected from list '" + ANSI_BLUE + elementsListTitle + ANSI_RESET + "'.");
+                logger.info("Element with name: '" + yellow(elementName) +
+                        "' has been successfully selected from list: '" + blue(elementsListTitle) + "'.");
                 return;
             }
         }
@@ -101,9 +94,9 @@ public abstract class AbstractPage extends FrameworkPage {
 
         for (int i = 0; i < elementsFromXpath.size(); i++) {
             Assertions.assertEquals(expectedElements.get(i), elementsFromXpath.get(i).getText(),
-                    "Expected text '" + expectedElements.get(i) + "', but received '" + elementsFromXpath.get(i).getText() + "'");
-            logger.info("Checked. Expected " + ANSI_YELLOW + expectedElements.get(i) + ANSI_RESET +
-                    ", received from xpath " + ANSI_BLUE + elementsFromXpath.get(i).getText() + ANSI_RESET);
+                    "Expected text: '" + expectedElements.get(i) + "', but received: '" + elementsFromXpath.get(i).getText() + "'");
+            logger.info("Checked. Expected: '" + yellow(expectedElements.get(i)) +
+                    "', received from xpath: '" + blue(elementsFromXpath.get(i).getText()) + "'");
         }
     }
 
@@ -113,9 +106,9 @@ public abstract class AbstractPage extends FrameworkPage {
     public void validateElementOrFieldEqualsExpectedValue(String elementTitle, String expectedValue) throws Exception {
         String textFromElement = $(getElementByTitle(elementTitle)).getText();
         Assertions.assertEquals(textFromElement, expectedValue,
-                "Expected value '" + expectedValue + "', but received '" + textFromElement + "'");
-        logger.info("Checked. Expected '" + ANSI_YELLOW + expectedValue + ANSI_RESET +
-                "', received from element or field '" + ANSI_BLUE + textFromElement + ANSI_RESET + "'");
+                "Expected value: '" + expectedValue + "', but received: '" + textFromElement + "'");
+        logger.info("Checked. Expected: '" + yellow(expectedValue) +
+                "', received from element or field: '" + blue(textFromElement) + "'");
     }
 
     @ActionsTitle({
