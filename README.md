@@ -6,9 +6,9 @@
 ![Cucumber](https://img.shields.io/badge/Cucumber-7.x-23D96C)
 ![Allure](https://img.shields.io/badge/Allure-Report-orange)
 
-SJC Test Framework is a Java-based UI test automation framework built around Cucumber, Selenide, JUnit Platform, and Allure.
+SJC Test Framework (Simple Java Cucumber-based Test Framework) is a Java-based test automation framework built around Cucumber, Selenide, JUnit Platform, and Allure.
 
-The project demonstrates a readable BDD-style DSL where feature steps call page actions and elements by human-friendly titles declared through annotations.
+The current implementation focuses on readable browser-based UI scenarios, while the framework name and structure leave room for extending the same BDD approach to other test layers.
 
 ---
 
@@ -20,9 +20,30 @@ The project demonstrates a readable BDD-style DSL where feature steps call page 
 
 ### Purpose
 
-This repository is an evolving UI automation framework for writing readable browser-based tests.
+This repository is an evolving test automation framework for writing readable BDD scenarios.
 
 [SauceDemo](https://www.saucedemo.com) is used as the example UI target because it is a public practice resource commonly used for UI test automation scenarios.
+
+### Architecture Idea
+
+The framework is built around a simple idea: feature files should describe user behavior in readable language, while page objects and annotations hide technical UI implementation details.
+
+For the current UI layer, the main flow is:
+
+```text
+Feature step -> Step definition -> Action executor -> Page object -> Selenide element
+```
+
+### DSL Example
+
+```gherkin
+Scenario: Successful login
+  * user is on page "Page Swag Labs"
+  * user (fills field) "Username" with value "standard_user"
+  * user (fills field) "Password" with value "secret_sauce"
+  * user (press button) "Login"
+  * user is on page "Products"
+```
 
 ### Features
 
@@ -146,15 +167,36 @@ Generate and open the report:
 
 ## Русская версия
 
-SJC Test Framework — UI test automation framework на Java, построенный на Cucumber, Selenide, JUnit Platform и Allure.
+SJC Test Framework (Simple Java Cucumber-based Test Framework) — фреймворк автоматизации тестирования на Java, построенный на Cucumber, Selenide, JUnit Platform и Allure.
 
-Проект использует читаемый BDD DSL: шаги в feature-файлах обращаются к страницам, действиям и элементам по человекочитаемым названиям, заданным через аннотации.
+Текущая реализация сфокусирована на читаемых браузерных UI-сценариях, но название и структура фреймворка оставляют пространство для расширения того же BDD-подхода на другие уровни тестирования.
 
 ### Назначение
 
-Это развивающийся фреймворк для автоматизации UI-тестов и написания читаемых браузерных сценариев.
+Это развивающийся фреймворк автоматизации тестирования для написания читаемых BDD-сценариев.
 
 В качестве UI-ресурса для примеров выбран [SauceDemo](https://www.saucedemo.com) — публичный тренировочный сайт, который часто используют для отработки сценариев UI-автоматизации.
+
+### Архитектурная идея
+
+Фреймворк построен вокруг простой идеи: feature-файлы должны описывать поведение пользователя читаемым языком, а Page Objects и аннотации скрывают технические детали взаимодействия с UI.
+
+Сейчас для UI-тестов цепочка выглядит так:
+
+```text
+Feature step -> Step definition -> Action executor -> Page object -> Selenide element
+```
+
+### Пример DSL
+
+```gherkin
+Сценарий: Успешная авторизация пользователя
+  * открывается страница "Page Swag Labs"
+  * пользователь (заполняет поле) "Username" значением "standard_user"
+  * пользователь (заполняет поле) "Password" значением "secret_sauce"
+  * пользователь (нажимает кнопку) "Login"
+  * открывается страница "Products"
+```
 
 ### Возможности
 
