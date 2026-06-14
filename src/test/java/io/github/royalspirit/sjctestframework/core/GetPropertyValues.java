@@ -8,15 +8,15 @@ public class GetPropertyValues {
     private static final String PROPERTY_FILE = "configuration/config.properties";
     private static final Properties properties = loadProperties();
 
-    public static String getProperty(String propertyName) throws Exception {
+    public static String getProperty(String propertyName) {
         return getRequiredProperty(propertyName);
     }
 
-    public static String getRequiredProperty(String propertyName) throws Exception {
+    public static String getRequiredProperty(String propertyName) {
         String value = getOptionalProperty(propertyName);
 
         if (value == null) {
-            throw new Exception("Property value '" + propertyName + "' can not be empty.");
+            throw new IllegalStateException("Property value '" + propertyName + "' can not be empty.");
         }
 
         return value;
