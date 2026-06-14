@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -24,10 +22,9 @@ public class Setup {
 
     /**
      * Registers all pages in the framework.
-     * @throws Exception if registration fails
      */
     @BeforeAll
-    public static void registerAllPages() throws Exception {
+    public static void registerAllPages() {
         PageContextRegistry.autoRegisterPages("io.github.royalspirit.sjctestframework.pages");
     }
 
@@ -39,10 +36,9 @@ public class Setup {
 
     /**
      * Sets up browser configuration and capabilities before tests.
-     * @throws Exception if setup fails
      */
     @Before
-    public static void setUp() throws Exception {
+    public static void setUp() {
         String browserName = GetPropertyValues.getRequiredProperty("browser.name");
         String browserSize = GetPropertyValues.getRequiredProperty("browser.size");
         String startingUrl = GetPropertyValues.getRequiredProperty("starting.url");
@@ -76,7 +72,7 @@ public class Setup {
 
             Configuration.browserCapabilities = chromeOptions;
         } else if (!Objects.equals(browserName, "firefox")) {
-            throw new Exception("Unsupported browser: " + browserName);
+            throw new IllegalArgumentException("Unsupported browser: " + browserName);
         }
 
         open(startingUrl);
@@ -89,12 +85,10 @@ public class Setup {
     }
 
     @After
-    public void takeScreenshotIfTestFails(Scenario scenario) throws IOException {
+    public void takeScreenshotIfTestFails(Scenario scenario) {
         if (scenario.isFailed()) {
             byte[] screenshot = Selenide.screenshot(OutputType.BYTES);
-            try (InputStream inputStream = new ByteArrayInputStream(screenshot)) {
-                Allure.attachment("Failed step screenshot", inputStream);
-            }
+            Allure.attachment("Failed step screenshot", new ByteArrayInputStream(screenshot));
         }
     }
 

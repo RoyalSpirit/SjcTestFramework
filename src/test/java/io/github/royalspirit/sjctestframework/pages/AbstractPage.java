@@ -28,12 +28,11 @@ public abstract class AbstractPage extends FrameworkPage {
      * Fills the specified field with the given value.
      * @param elementTitle the title of the field to fill
      * @param expectedValue the value to set
-     * @throws Exception if the element cannot be found or interacted with
      */
     @ActionsTitle({
             @ActionTitle(value = "fills field"),
             @ActionTitle(value = "заполняет поле")})
-    public void fillField(String elementTitle, String expectedValue) throws Exception {
+    public void fillField(String elementTitle, String expectedValue) {
         $(getElementByTitle(elementTitle)).shouldBe(visible).setValue(expectedValue);
         logger.info("Filled the: '" + blue(elementTitle) + "' field with the value: '" + green(expectedValue) + "'");
     }
@@ -41,12 +40,11 @@ public abstract class AbstractPage extends FrameworkPage {
     /**
      * Clears the specified field.
      * @param elementTitle the title of the field to clear
-     * @throws Exception if the element cannot be found or interacted with
      */
     @ActionsTitle({
             @ActionTitle(value = "clears field"),
             @ActionTitle(value = "очищает поле")})
-    public void clearField(String elementTitle) throws Exception {
+    public void clearField(String elementTitle) {
         Keys cmdCtrl = Platform.getCurrent().is(Platform.MAC) ? Keys.COMMAND : Keys.CONTROL;
         SelenideElement element = $(getElementByTitle(elementTitle));
         element.sendKeys(cmdCtrl, "a");
@@ -58,7 +56,7 @@ public abstract class AbstractPage extends FrameworkPage {
             @ActionTitle(value = "press button"),
             @ActionTitle(value = "click on element"),
             @ActionTitle(value = "нажимает кнопку")})
-    public void clickButton(String elementTitle) throws Exception {
+    public void clickButton(String elementTitle) {
         $(getElementByTitle(elementTitle)).shouldBe(visible).click();
         logger.info("Pressed the button: " + red(elementTitle));
     }
@@ -85,7 +83,7 @@ public abstract class AbstractPage extends FrameworkPage {
     @ActionsTitle({
             @ActionTitle(value = "checks list of elements"),
             @ActionTitle(value = "проверяет, что список")})
-    public void validateListOfElementsContainsExpectedValues(String elementsListTitle, DataTable tableWithElements) throws Exception {
+    public void validateListOfElementsContainsExpectedValues(String elementsListTitle, DataTable tableWithElements) {
         List<String> expectedElements = tableWithElements.asList(String.class);
         ElementsCollection elementsFromXpath = $$(getElementByTitle(elementsListTitle));
         elementsFromXpath.shouldHave(CollectionCondition.sizeGreaterThan(0));
@@ -103,7 +101,7 @@ public abstract class AbstractPage extends FrameworkPage {
     @ActionsTitle({
             @ActionTitle(value = "checks field or element equals expected value"),
             @ActionTitle(value = "проверяет поле или элемент на ожидаемое значение")})
-    public void validateElementOrFieldEqualsExpectedValue(String elementTitle, String expectedValue) throws Exception {
+    public void validateElementOrFieldEqualsExpectedValue(String elementTitle, String expectedValue) {
         String textFromElement = $(getElementByTitle(elementTitle)).getText();
         Assertions.assertEquals(textFromElement, expectedValue,
                 "Expected value: '" + expectedValue + "', but received: '" + textFromElement + "'");
@@ -114,8 +112,15 @@ public abstract class AbstractPage extends FrameworkPage {
     @ActionsTitle({
             @ActionTitle(value = "awaits"),
             @ActionTitle(value = "ожидает")})
-    public void waitForSomeSeconds(String seconds) throws Exception {
-        Thread.sleep(Duration.ofSeconds(Long.parseLong(seconds)));
+    public void waitForSomeSeconds(String seconds) {
+        try {
+            Thread.sleep(Duration.ofSeconds(Long.parseLong(seconds)));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Seconds value must be a number: " + seconds, e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Waiting was interrupted.", e);
         }
+    }
 
 }

@@ -5,6 +5,7 @@ import io.github.royalspirit.sjctestframework.core.annotations.ActionsTitle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,8 +38,10 @@ public abstract class FrameworkPage {
                 throw new IllegalArgumentException("Method " + method.getName() + " awaits "
                         + method.getParameterCount() + " parameters, but received " + params.length);
             }
-        } catch (Exception e) {
+        } catch (InvocationTargetException e) {
             throw new RuntimeException("Error calling method with action: " + actionTitle, e.getCause());
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Unable to access method with action: " + actionTitle, e);
         }
     }
 
