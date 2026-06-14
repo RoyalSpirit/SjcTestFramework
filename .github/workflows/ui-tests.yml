@@ -1,0 +1,53 @@
+name: UI Test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ui-tests:
+    name: Gradle UI test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Show browser version
+        run: google-chrome --version
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
+      - name: Run smoke UI test
+        run: ./gradlew test -Dcucumber.filter.tags=@TEST-003 -Dbrowser.headless=true -Dlogs.color.enabled=false
+
+      - name: Upload Gradle test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-test-report
+          path: build/reports/tests/test
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: build/allure-results
+          if-no-files-found: ignore
+          retention-days: 7

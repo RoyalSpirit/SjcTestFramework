@@ -7,6 +7,7 @@ import io.cucumber.datatable.DataTable;
 import io.github.royalspirit.sjctestframework.core.FrameworkPage;
 import io.github.royalspirit.sjctestframework.core.annotations.ActionTitle;
 import io.github.royalspirit.sjctestframework.core.annotations.ActionsTitle;
+import io.github.royalspirit.sjctestframework.core.annotations.ElementTitle;
 import io.github.royalspirit.sjctestframework.core.annotations.PageTitle;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.Keys;
@@ -25,9 +26,9 @@ import static io.github.royalspirit.sjctestframework.core.logging.LogFormatter.*
 public abstract class AbstractPage extends FrameworkPage {
 
     /**
-     * Fills the specified field with the given value.
-     * @param elementTitle the title of the field to fill
-     * @param expectedValue the value to set
+     * Fills a visible field resolved by its element title.
+     * @param elementTitle element title declared in {@link ElementTitle}
+     * @param expectedValue value to set into the field
      */
     @ActionsTitle({
             @ActionTitle(value = "fills field"),
@@ -38,8 +39,8 @@ public abstract class AbstractPage extends FrameworkPage {
     }
 
     /**
-     * Clears the specified field.
-     * @param elementTitle the title of the field to clear
+     * Clears a field resolved by its element title.
+     * @param elementTitle element title declared in {@link ElementTitle}
      */
     @ActionsTitle({
             @ActionTitle(value = "clears field"),
@@ -52,6 +53,10 @@ public abstract class AbstractPage extends FrameworkPage {
         logger.info("Cleared field with title: '" + blue(elementTitle) + "'.");
     }
 
+    /**
+     * Clicks a visible element resolved by its element title.
+     * @param elementTitle element title declared in {@link ElementTitle}
+     */
     @ActionsTitle({
             @ActionTitle(value = "press button"),
             @ActionTitle(value = "click on element"),
@@ -61,6 +66,11 @@ public abstract class AbstractPage extends FrameworkPage {
         logger.info("Pressed the button: " + red(elementTitle));
     }
 
+    /**
+     * Selects an element from an element list by exact visible text.
+     * @param elementsListTitle element collection title declared in {@link ElementTitle}
+     * @param elementName exact text of the element to select
+     */
     @ActionsTitle({
             @ActionTitle(value = "selects element from list"),
             @ActionTitle(value = "выбирает элемент из списка")})
@@ -80,6 +90,11 @@ public abstract class AbstractPage extends FrameworkPage {
         Assertions.fail("Element with name '" + elementName + "' not found.");
     }
 
+    /**
+     * Verifies that an element list contains exactly the expected values in the same order.
+     * @param elementsListTitle element collection title declared in {@link ElementTitle}
+     * @param tableWithElements expected element values presented as a DataTable
+     */
     @ActionsTitle({
             @ActionTitle(value = "checks list of elements"),
             @ActionTitle(value = "проверяет, что список")})
@@ -98,6 +113,11 @@ public abstract class AbstractPage extends FrameworkPage {
         }
     }
 
+    /**
+     * Verifies that an element text equals the expected value.
+     * @param elementTitle element title declared in {@link ElementTitle}
+     * @param expectedValue expected text value
+     */
     @ActionsTitle({
             @ActionTitle(value = "checks field or element equals expected value"),
             @ActionTitle(value = "проверяет поле или элемент на ожидаемое значение")})
@@ -109,6 +129,10 @@ public abstract class AbstractPage extends FrameworkPage {
                 "', received from element or field: '" + blue(textFromElement) + "'");
     }
 
+    /**
+     * Pauses scenario execution for the specified number of seconds.
+     * @param seconds number of seconds to wait
+     */
     @ActionsTitle({
             @ActionTitle(value = "awaits"),
             @ActionTitle(value = "ожидает")})
