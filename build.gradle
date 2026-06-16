@@ -28,8 +28,9 @@ configurations {
 def cucumberVersion = '7.14.0'
 def selenideVersion = '7.16.0'
 def junitVersion = '5.11.3'
+def restAssuredVersion = '5.5.7'
 
-def allureVersion = '2.29.0'
+def allureVersion = '2.35.1'
 def aspectJVersion = '1.9.22'
 
 dependencies {
@@ -41,9 +42,14 @@ dependencies {
     testImplementation "io.cucumber:cucumber-junit-platform-engine:$cucumberVersion"
     testImplementation "org.junit.platform:junit-platform-suite:1.10.2"
     testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
+    testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
+    // Overrides vulnerable transitive dependencies from RestAssured
+    testImplementation "org.apache.httpcomponents:httpclient:4.5.14"
+    testImplementation "org.apache.httpcomponents:httpmime:4.5.14"
+    testImplementation "commons-codec:commons-codec:1.22.0"
 
     // Additional dependencies
-    testImplementation "io.qameta.allure:allure-cucumber7-jvm:2.24.0"
+    testImplementation "io.qameta.allure:allure-cucumber7-jvm"
     testImplementation "ch.qos.logback:logback-classic:1.5.33"
 
     // Allure report dependencies
@@ -51,6 +57,7 @@ dependencies {
     testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
     testImplementation ("io.qameta.allure:allure-selenide:$allureVersion")
     testImplementation "io.qameta.allure:allure-junit5"
+    testImplementation "io.qameta.allure:allure-rest-assured"
     testImplementation platform("org.junit:junit-bom:$junitVersion")
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
@@ -64,6 +71,7 @@ def forwardedTestSystemProperties = [
         'browser.headless',
         'path.to.webdriver',
         'logs.color.enabled',
+        'api.base.url',
         'cucumber.filter.tags'
 ]
 

@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.Selenide.open;
 import static io.github.royalspirit.sjctestframework.core.logging.LogFormatter.cyan;
 
 
@@ -37,7 +38,7 @@ public class Setup {
     /**
      * Sets up browser configuration and capabilities before tests.
      */
-    @Before
+    @Before("@ui")
     public static void setUp() {
         String browserName = GetPropertyValues.getRequiredProperty("browser.name");
         String browserSize = GetPropertyValues.getRequiredProperty("browser.size");
@@ -84,7 +85,7 @@ public class Setup {
         logger.info("Running scenario with name: " + cyan(scenario.getName()));
     }
 
-    @After
+    @After("@ui")
     public void takeScreenshotIfTestFails(Scenario scenario) {
         if (scenario.isFailed()) {
             byte[] screenshot = Selenide.screenshot(OutputType.BYTES);
@@ -94,7 +95,6 @@ public class Setup {
 
     @AfterAll
     public static void windowAndDriverClose() {
-        closeWindow();
         closeWebDriver();
     }
 
