@@ -1,20 +1,21 @@
 #language: en
+@ui
 Feature: First Test Feature
 
   @TEST-001
   Scenario: TEST-001 User login and check list of products
-  * user is on page "Page Swag Labs"
-  * user (fills field) "Username" with value "standard_user"
-  * user (fills field) "Password" with value "secret_sauce"
-  * user (press button) "Login"
-  * user is on page "Products"
-  * user (checks list of elements) "Products list" with data:
-    | Sauce Labs Backpack               |
-    | Sauce Labs Bike Light             |
-    | Sauce Labs Bolt T-Shirt           |
-    | Sauce Labs Fleece Jacket          |
-    | Sauce Labs Onesie                 |
-    | Test.allTheThings() T-Shirt (Red) |
+    * user is on page "Page Swag Labs"
+    * user (fills field) "Username" with value "standard_user"
+    * user (fills field) "Password" with value "secret_sauce"
+    * user (press button) "Login"
+    * user is on page "Products"
+    * user (checks list of elements) "Products list" with data:
+      | Sauce Labs Backpack               |
+      | Sauce Labs Bike Light             |
+      | Sauce Labs Bolt T-Shirt           |
+      | Sauce Labs Fleece Jacket          |
+      | Sauce Labs Onesie                 |
+      | Test.allTheThings() T-Shirt (Red) |
     * user (press button) "Menu"
     * user is on page "Menu Panel"
     * user (press button) "Logout"
@@ -72,17 +73,17 @@ Feature: First Test Feature
     * user (click on element) "Cart"
     * user is on page "Your Cart"
     * user (checks list of elements) "Products list in cart" with data:
-      | Sauce Labs Bike Light     |
-      | Sauce Labs Onesie         |
-      | Sauce Labs Fleece Jacket  |
+      | Sauce Labs Bike Light    |
+      | Sauce Labs Onesie        |
+      | Sauce Labs Fleece Jacket |
     * user (selects element from list) "Products list in cart" based on name "Sauce Labs Onesie"
     * user is on page "Detailed Product Information"
     * user (press button) "Remove"
     * user (click on element) "Cart"
     * user is on page "Your Cart"
     * user (checks list of elements) "Products list in cart" with data:
-      | Sauce Labs Bike Light     |
-      | Sauce Labs Fleece Jacket  |
+      | Sauce Labs Bike Light    |
+      | Sauce Labs Fleece Jacket |
 
 
 
