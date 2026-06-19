@@ -14,6 +14,7 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
+import static io.github.royalspirit.sjctestframework.core.logging.LogFormatter.blue;
 import static io.github.royalspirit.sjctestframework.core.logging.LogFormatter.cyan;
 
 
@@ -35,11 +36,16 @@ public class Setup {
 //        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
 //    }
 
+    @Before(order = 1)
+    public void scenarioNameLogging(Scenario scenario) {
+        logger.info("Running scenario with name: " + cyan(scenario.getName()));
+    }
+
     /**
      * Sets up browser configuration and capabilities before tests.
      */
-    @Before("@ui")
-    public static void setUp() {
+    @Before(value = "@ui", order = 2)
+    public static void setUpUi() {
         String browserName = GetPropertyValues.getRequiredProperty("browser.name");
         String browserSize = GetPropertyValues.getRequiredProperty("browser.size");
         String startingUrl = GetPropertyValues.getRequiredProperty("starting.url");
@@ -80,12 +86,13 @@ public class Setup {
         logger.info("Opening URL: " + startingUrl);
     }
 
-    @Before
-    public void scenarioNameLogging(Scenario scenario) {
-        logger.info("Running scenario with name: " + cyan(scenario.getName()));
+    @Before(value = "@api", order = 2)
+    public static void setUpApi() {
+        String baseUrl = GetPropertyValues.getRequiredProperty("api.base.url");
+        logger.info("Base URL for API requests: '" + blue(baseUrl) + "'.");
     }
 
-    @After("@ui")
+    @After(value = "@ui")
     public void takeScreenshotIfTestFails(Scenario scenario) {
         if (scenario.isFailed()) {
             byte[] screenshot = Selenide.screenshot(OutputType.BYTES);
