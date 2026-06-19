@@ -4,11 +4,12 @@
 ![Gradle](https://img.shields.io/badge/Gradle-8.x-02303A)
 ![Selenide](https://img.shields.io/badge/Selenide-7.x-43B02A)
 ![Cucumber](https://img.shields.io/badge/Cucumber-7.x-23D96C)
+![RestAssured](https://img.shields.io/badge/RestAssured-5.x-6DB33F)
 ![Allure](https://img.shields.io/badge/Allure-Report-orange)
 
-SJC Test Framework (Simple Java Cucumber-based Test Framework) is a Java-based test automation framework built around Cucumber, Selenide, JUnit Platform, and Allure.
+SJC Test Framework (Simple Java Cucumber-based Test Framework) is a Java-based test automation framework built around Cucumber, Selenide, RestAssured, JUnit Platform, and Allure.
 
-The current implementation focuses on readable browser-based UI scenarios, while the framework name and structure leave room for extending the same BDD approach to other test layers.
+The current implementation includes readable browser-based UI scenarios and a minimal REST API testing layer using the same BDD approach.
 
 ---
 
@@ -20,13 +21,15 @@ The current implementation focuses on readable browser-based UI scenarios, while
 
 ### Purpose
 
-This repository is an evolving test automation framework for writing readable BDD scenarios.
+This repository is an evolving test automation framework for writing readable BDD scenarios for UI and REST API checks.
 
 [SauceDemo](https://www.saucedemo.com) is used as the example UI target because it is a public practice resource commonly used for UI test automation scenarios.
 
+[JSONPlaceholder](https://jsonplaceholder.typicode.com) is used as the example REST API target because it is a public fake API commonly used for API testing and prototyping.
+
 ### Architecture Idea
 
-The framework is built around a simple idea: feature files should describe user behavior in readable language, while page objects and annotations hide technical UI implementation details.
+The framework is built around a simple idea: feature files should describe test intent in readable language, while framework internals hide technical implementation details.
 
 For the current UI layer, the main flow is:
 
@@ -35,6 +38,8 @@ Feature step -> Step definition -> Action executor -> Page object -> Selenide el
 ```
 
 ### DSL Example
+
+UI scenario:
 
 ```gherkin
 Scenario: Successful login
@@ -45,6 +50,16 @@ Scenario: Successful login
   * user is on page "Products"
 ```
 
+API scenario:
+
+```gherkin
+Scenario: Get post by id
+  * api (sends GET request) to endpoint "/posts/1"
+  * api (checks response status code) equals "200"
+  * api (checks response field value) "id" equals "1"
+  * api (checks response field is not empty) "title"
+```
+
 ### Features
 
 * Cucumber feature files with readable test steps.
@@ -52,6 +67,7 @@ Scenario: Successful login
 * Annotation-based page, action, and element registration.
 * Shared actions for common UI operations: filling fields, clicking elements, checking lists, checking text values.
 * Selenide-based browser interaction and waits.
+* Basic REST API checks with RestAssured.
 * Allure integration with screenshots attached on failed scenarios.
 * Configurable browser settings via `config.properties` and `-D` system properties.
 * No local WebDriver binary is required by default.
@@ -63,6 +79,7 @@ Scenario: Successful login
 * Test Runner: JUnit Platform
 * BDD: Cucumber JVM
 * UI Automation: Selenide / Selenium WebDriver
+* API Testing: RestAssured
 * Reporting: Allure
 * Logging: Logback
 
@@ -73,6 +90,7 @@ src/test/java/io/github/royalspirit/sjctestframework/
 ├── RunCucumberTest.java                # Cucumber suite entry point
 ├── core/
 │   ├── annotations/                    # Framework annotations
+│   ├── api/                            # REST API request, response, and specification helpers
 │   ├── stepdefs/                       # Cucumber step definitions
 │   ├── Setup.java                      # Browser and scenario hooks
 │   ├── FrameworkPage.java              # Base page action executor
@@ -115,6 +133,12 @@ src/test/resources/
 ./gradlew test -Dcucumber.filter.tags=@TEST-003
 ```
 
+#### Run API scenarios
+
+```bash
+./gradlew test -Dcucumber.filter.tags=@api
+```
+
 #### Run with a different browser
 
 ```bash
@@ -138,6 +162,7 @@ browser.size=1920x1200
 browser.version=null
 browser.headless=false
 path.to.webdriver=null
+api.base.url=https://jsonplaceholder.typicode.com
 logs.color.enabled=true
 ```
 
@@ -167,19 +192,21 @@ Generate and open the report:
 
 ## Русская версия
 
-SJC Test Framework (Simple Java Cucumber-based Test Framework) — фреймворк автоматизации тестирования на Java, построенный на Cucumber, Selenide, JUnit Platform и Allure.
+SJC Test Framework (Simple Java Cucumber-based Test Framework) — фреймворк автоматизации тестирования на Java, построенный на Cucumber, Selenide, RestAssured, JUnit Platform и Allure.
 
-Текущая реализация сфокусирована на читаемых браузерных UI-сценариях, но название и структура фреймворка оставляют пространство для расширения того же BDD-подхода на другие уровни тестирования.
+Текущая реализация включает читаемые браузерные UI-сценарии и минимальный слой для REST API-тестирования с тем же BDD-подходом.
 
 ### Назначение
 
-Это развивающийся фреймворк автоматизации тестирования для написания читаемых BDD-сценариев.
+Это развивающийся фреймворк автоматизации тестирования для написания читаемых BDD-сценариев для UI и REST API-проверок.
 
 В качестве UI-ресурса для примеров выбран [SauceDemo](https://www.saucedemo.com) — публичный тренировочный сайт, который часто используют для отработки сценариев UI-автоматизации.
 
+В качестве REST API-ресурса для примеров выбран [JSONPlaceholder](https://jsonplaceholder.typicode.com) — публичный fake API, который часто используют для тестирования и прототипирования API.
+
 ### Архитектурная идея
 
-Фреймворк построен вокруг простой идеи: feature-файлы должны описывать поведение пользователя читаемым языком, а Page Objects и аннотации скрывают технические детали взаимодействия с UI.
+Фреймворк построен вокруг простой идеи: feature-файлы должны описывать намерение теста читаемым языком, а внутренние механизмы фреймворка скрывают технические детали реализации.
 
 Сейчас для UI-тестов цепочка выглядит так:
 
@@ -188,6 +215,8 @@ Feature step -> Step definition -> Action executor -> Page object -> Selenide el
 ```
 
 ### Пример DSL
+
+UI-сценарий:
 
 ```gherkin
 Сценарий: Успешная авторизация пользователя
@@ -198,6 +227,16 @@ Feature step -> Step definition -> Action executor -> Page object -> Selenide el
   * открывается страница "Products"
 ```
 
+API-сценарий:
+
+```gherkin
+Сценарий: Проверка ответа сервиса по идентификатору
+  * api (отправляет GET запрос) на endpoint "/posts/1"
+  * api (проверяет статус ответа) равен "200"
+  * api (проверяет значение поля ответа) "id" равно "1"
+  * api (проверяет что поле ответа не пустое) "title"
+```
+
 ### Возможности
 
 * Cucumber feature-файлы с читаемыми шагами.
@@ -205,6 +244,7 @@ Feature step -> Step definition -> Action executor -> Page object -> Selenide el
 * Регистрация страниц, действий и элементов через аннотации.
 * Общие действия: заполнение полей, клики, проверки списков, проверки текстовых значений.
 * Работа с браузером через Selenide.
+* Базовые REST API-проверки через RestAssured.
 * Интеграция с Allure и прикрепление скриншота при падении сценария.
 * Настройка браузера через `config.properties` и `-D` параметры.
 * Локальный WebDriver binary по умолчанию не требуется.
@@ -216,6 +256,7 @@ Feature step -> Step definition -> Action executor -> Page object -> Selenide el
 * JUnit Platform
 * Cucumber JVM
 * Selenide / Selenium WebDriver
+* RestAssured
 * Allure
 * Logback
 
@@ -245,6 +286,12 @@ Feature step -> Step definition -> Action executor -> Page object -> Selenide el
 ./gradlew test -Dcucumber.filter.tags=@TEST-003
 ```
 
+#### Запуск API-сценариев
+
+```bash
+./gradlew test -Dcucumber.filter.tags=@api
+```
+
 #### Запуск в другом браузере
 
 ```bash
@@ -257,6 +304,19 @@ Feature step -> Step definition -> Action executor -> Page object -> Selenide el
 
 ```text
 src/test/resources/configuration/config.properties
+```
+
+Поддерживаемые параметры:
+
+```properties
+starting.url=https://www.saucedemo.com
+browser.name=chrome
+browser.size=1920x1200
+browser.version=null
+browser.headless=false
+path.to.webdriver=null
+api.base.url=https://jsonplaceholder.typicode.com
+logs.color.enabled=true
 ```
 
 Значения, переданные через `-D`, имеют приоритет над значениями из файла.

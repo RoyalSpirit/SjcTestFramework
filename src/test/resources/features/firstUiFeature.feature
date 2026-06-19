@@ -1,6 +1,6 @@
 #language: en
 @ui
-Feature: First Test Feature
+Feature: First UI Test Feature
 
   @TEST-001
   Scenario: TEST-001 User login and check list of products
@@ -84,6 +84,3 @@ Feature: First Test Feature
     * user (checks list of elements) "Products list in cart" with data:
       | Sauce Labs Bike Light    |
       | Sauce Labs Fleece Jacket |
-
-
-
