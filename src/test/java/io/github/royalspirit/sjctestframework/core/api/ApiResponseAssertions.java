@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static io.github.royalspirit.sjctestframework.core.logging.LogFormatter.*;
@@ -59,6 +60,31 @@ public class ApiResponseAssertions {
         }
 
         logger.info("Response field '" + yellow(fieldName) + "' is not empty.");
+    }
+
+    public void assertResponseListIsNotEmpty() {
+        List<?> responseList = getResponseBodyAsList();
+
+        assertFalse(responseList.isEmpty(), "Response list should not be empty.");
+
+        logger.info("Response list is not empty.");
+    }
+
+    public void assertResponseListSizeEquals(String expectedSize) {
+        int expected = Integer.parseInt(expectedSize);
+        List<?> responseList = getResponseBodyAsList();
+
+        assertEquals(expected, responseList.size(), "Response list size should match expected value.");
+
+        logger.info("Response list size matched expected value: '" + green(expectedSize) + "'.");
+    }
+
+    private List<?> getResponseBodyAsList() {
+        Object responseBody = apiContext.getResponse()
+                .jsonPath()
+                .get("$");
+
+        return assertInstanceOf(List.class, responseBody, "Response body should be a JSON array.");
     }
 
 }

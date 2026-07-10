@@ -1,4 +1,4 @@
-name: UI Test
+name: Smoke Tests
 
 on:
   push:
@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  ui-tests:
-    name: Gradle UI test
+  smoke-tests:
+    name: Gradle smoke tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -31,8 +31,8 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x gradlew
 
-      - name: Run smoke UI test
-        run: ./gradlew test -Dcucumber.filter.tags=@TEST-003 -Dbrowser.headless=true -Dlogs.color.enabled=false
+      - name: Run smoke tests
+        run: ./gradlew test -Dcucumber.filter.tags="@API-TEST-001 or @TEST-003" -Dbrowser.headless=true -Dlogs.color.enabled=false
 
       - name: Upload Gradle test report
         if: always()
