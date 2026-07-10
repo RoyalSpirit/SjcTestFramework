@@ -58,6 +58,29 @@ Scenario: Get post by id
   * api (checks response status code) equals "200"
   * api (checks response field value) "id" equals "1"
   * api (checks response field is not empty) "title"
+
+Scenario: Get posts by user id
+  * api (sends GET request) to endpoint "/posts" with query params:
+    | userId | 1 |
+  * api (checks response status code) equals "200"
+  * api (checks response list is not empty)
+  * api (checks response list size) equals "10"
+  * api (checks response field is not empty) "[0].title"
+
+Scenario: Create post request with JSON body
+  * api (sends POST request) to endpoint "/posts" with JSON body:
+    """
+    {
+      "title": "foo",
+      "body": "bar",
+      "userId": 1
+    }
+    """
+  * api (checks response status code) equals "201"
+  * api (checks response field value) "title" equals "foo"
+  * api (checks response field value) "body" equals "bar"
+  * api (checks response field value) "userId" equals "1"
+  * api (checks response field is not empty) "id"
 ```
 
 ### Features
@@ -235,6 +258,29 @@ API-сценарий:
   * api (проверяет статус ответа) равен "200"
   * api (проверяет значение поля ответа) "id" равно "1"
   * api (проверяет что поле ответа не пустое) "title"
+
+Сценарий: Проверка ответа сервиса с параметрами
+  * api (отправляет GET запрос) на endpoint "/posts" с параметрами:
+    | userId | 1 |
+  * api (проверяет статус ответа) равен "200"
+  * api (проверяет что список в ответе не пустой)
+  * api (проверяет размер списка в ответе) равен "10"
+  * api (проверяет что поле ответа не пустое) "[0].title"
+
+Сценарий: Создание пост запроса с передачей JSON body
+  * api (отправляет POST запрос) на endpoint "/posts" с JSON body:
+    """
+    {
+      "title": "foo",
+      "body": "bar",
+      "userId": 1
+    }
+    """
+  * api (проверяет статус ответа) равен "201"
+  * api (проверяет значение поля ответа) "title" равно "foo"
+  * api (проверяет значение поля ответа) "body" равно "bar"
+  * api (проверяет значение поля ответа) "userId" равно "1"
+  * api (проверяет что поле ответа не пустое) "id"
 ```
 
 ### Возможности
